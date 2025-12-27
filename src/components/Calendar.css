@@ -1,0 +1,76 @@
+.calendar{
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/*titoli*/
+.calendar-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-header h2{
+  text-transform: uppercase;
+}
+
+/*bottoni titoli*/
+.calendar-header button{
+  background: #7FFFD4;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.calendar-header button:hover{
+  background: #40E0D0;
+  color: white;
+}
+
+.calendar-grid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day-header{
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 10px 0;
+  background: #40E0D0;
+  color: black;
+}
+
+.calendar-day{
+  text-align: left;
+  height: 80px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.calendar-day.other-month {
+  color: #ccc;
+}
+
+.calendar-day.today {
+  background: #40E0D0;
+  color: black;
+}
+
+.calendar-day.selected {
+  background: #5b48dc;
+}
+
+.calendar-day:hover {
+  background: #7FFFD4;
+  color: black;
+}

@@ -1,0 +1,33 @@
+# File di sistema macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# File IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dipendenze
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.local
+venv/
+.venv/
+
+# Log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
