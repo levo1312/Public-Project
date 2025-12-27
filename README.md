@@ -1,3 +1,36 @@
+
+calendario con interfaccia moderna
+il progetto consiste in un Calendario minimalista con 
+la possibilità di aggungere eventi con ciclicità o
+ semplicemente spostarli nei mesi, oltre alla possibilità
+ di modificrali, ed eliminarli 
+
+
+DA FARE:
+
+  Funzioni:
+    add event
+    modifica event
+    cancella event
+
+
+  Design:
+    - font:
+
+    - Themi:
+        dark/clear
+      
+    - colori:
+        verde acqua/lillà
+
+
+  DETTAGLI:
+    - icone
+        add event
+        modifica event
+        cancella event
+    
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
