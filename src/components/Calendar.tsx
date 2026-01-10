@@ -84,10 +84,15 @@ const Calendar: React.FC = () => {
                 {days.map((day, index)=>(
                     <div
                         key={index}
-                        className={`calendar-day ${day.isCurrentMonth ? '' : 'other-month'} ${day.isToday ? 'today' : ''} ${day.isSelected ? 'selected' : ''}`}
+                        className={`calendar-day ${day.isCurrentMonth ? '' : 'other-month'} ${day.isToday ? 'today' : ''} ${day.isSelected ? 'selected' : ''} ${events.some(event => event.start.toDateString() === day.date.toDateString()) ? 'has-events' : ''}`}
                         onClick={() => handleDayClick(day)}
                     >
                         {day.date.getDate()}
+                        {events.filter(event => event.start.toDateString() === day.date.toDateString()).length > 0 && (
+                            <div className="event-indicator">
+                                {events.filter(event => event.start.toDateString() === day.date.toDateString()).length}
+                            </div>
+                        )}
                     </div>
                 ))}
         </div>

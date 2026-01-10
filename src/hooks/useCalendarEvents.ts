@@ -7,8 +7,8 @@ export const useCalendarEvents = () => {
     const onAddEvent = (date: Date, title: string, note: string) => {
         const newEvent: CalendarEvents = {
             id: Date.now().toString(),
-            title:'',
-            note: '',
+            title: title,
+            note: note,
             start: date,
             end: new Date(date.getTime() + 60 * 60 * 1000), // 1 ora dopo
             color: 'red',
