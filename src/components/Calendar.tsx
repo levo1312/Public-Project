@@ -3,9 +3,13 @@ import type { DayInfo } from "../types/calendar";
 import { useCalendarEvents} from "../hooks/useCalendarEvents";
 import './Calendar.css';
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  selectedDate: Date;
+  onDateSelect: (date: Date) => void;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     const [currentDate, setCurrentDate] = useState (new Date());         //data odierna 
-    const [selectDate, setSelectDate] = useState< Date | null> (null);          //data selezionata
     const { events, onAddEvent } = useCalendarEvents();    //gestione eventi
     const [showModal, setShowmodal] = useState(false);      //stato modale
 
@@ -30,7 +34,7 @@ const Calendar: React.FC = () => {
                 date,
                 isCurrentMonth: date.getMonth() === month,
                 isToday: date.toDateString() === today.toDateString(),
-                isSelected: selectDate ? date.toDateString() === selectDate.toDateString() : false,
+                isSelected: selectedDate ? date.toDateString() === selectedDate.toDateString() : false,
             });
         }
 
@@ -52,17 +56,15 @@ const Calendar: React.FC = () => {
 
 //Gestione selezione giorno
     const handleDayClick = (day: DayInfo) => {
-        setSelectDate(day.date);
+        onDateSelect(day.date);
         setShowmodal(true);
     };
 
 
 //gestione aggiunta evento
     const handleAddEvent = (title: string, note: string) => {
-        if (selectDate) {
-            onAddEvent(selectDate, title, note);
-            setShowmodal(false);
-        }
+        onAddEvent(selectedDate, title, note);
+        setShowmodal(false);
     };
 
 
@@ -97,13 +99,13 @@ const Calendar: React.FC = () => {
                 ))}
         </div>
 
-        {showModal && selectDate && (
+        {showModal && (
             <div className="modal-overlay" onClick={()=> setShowmodal(false)}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                    <h3>Eventi di oggi:{selectDate.toLocaleDateString('it-IT')}</h3>
-                    {events.filter(event => event.start.toDateString() === selectDate.toDateString()).length > 0 ? (
+                    <h3>Eventi:{selectedDate.toLocaleDateString('it-IT')}</h3>
+                    {events.filter(event => event.start.toDateString() === selectedDate.toDateString()).length > 0 ? (
                         <ul>
-                            {events.filter(event => event.start.toDateString() === selectDate.toDateString()).map(event =>(
+                            {events.filter(event => event.start.toDateString() === selectedDate.toDateString()).map(event =>(
                                 <li key={event.id}>{event.title} - {event.note}</li>
                             ))}
                         </ul>
