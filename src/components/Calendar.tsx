@@ -98,7 +98,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                     </div>
                 ))}
         </div>
-
+{       /*visualizzazione modal addEvent */}
         {showModal && (
             <div className="modal-overlay" onClick={()=> setShowmodal(false)}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -112,8 +112,9 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                     ) : (
                         <p>Nessun evento</p>
                     )}
-                    {/*gesttione del form per aggiungere new evento forse da gestire con il bottone*/}
-                    <h4>Aggiungi Evento</h4>
+                    {/*gesttione del form per aggiungere new evento, gestire l'obbligo dei riempimento di tutti i campi*/}
+                    <button className="close-botton" onClick={() => setShowmodal(false)}>X</button>
+                    <h4>Aggiungi Evento:</h4>
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         const formData = new FormData(e.target as HTMLFormElement);
@@ -121,11 +122,12 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                         const note = formData.get('note') as string;
                         handleAddEvent(title, note);
                     }}>
-                        <input name = "title" type="text" placeholder="nome evento..." required />
+                        <input name = "title" type="text" placeholder="aggiungi evento..." required />
+                        <br/>
                         <input name = "note" type="text" placeholder="descrizione..." required />
-                        <button type="submit">Aggiungi</button>
+                        <button className="add-botton" type="submit">+</button>
                     </form>
-                    <button onClick={() => setShowmodal(false)}>Chiudi</button>
+                    
 
                 </div>
             </div>

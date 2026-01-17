@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-            <div>
+      <div>
         <Calendar selectedDate={selectedDate} onDateSelect={setSelectedDate} />
       </div>
     </>
