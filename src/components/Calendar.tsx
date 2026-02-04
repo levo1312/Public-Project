@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import type { DayInfo } from "../types/calendar";
 import { useCalendarEvents} from "../hooks/useCalendarEvents";
 import './Calendar.css';
@@ -13,6 +13,15 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     const { events, onAddEvent } = useCalendarEvents();    //gestione eventi
     const [showModal, setShowmodal] = useState(false);      //stato modale
 
+    // Chiude il modal premendo Escape
+    useEffect(() => {
+      if (!showModal) return;
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setShowmodal(false);
+      };
+      window.addEventListener('keydown', onKey);
+      return () => window.removeEventListener('keydown', onKey);
+    }, [showModal]);
 
     //funzione per generare i giorni del mese 
     const generDays = () :DayInfo[]=>{
@@ -110,21 +119,27 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                             ))}
                         </ul>
                     ) : (
-                        <p>Nessun evento</p>
+                        <p>Nessun Evento</p>
                     )}
                     {/*gesttione del form per aggiungere new evento, gestire l'obbligo dei riempimento di tutti i campi*/}
-                    <button className="close-botton" onClick={() => setShowmodal(false)}>X</button>
+                    <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowmodal(false)}>X</button>
                     <h4>Aggiungi Evento:</h4>
-                    <form onSubmit={(e) => {
+                    <form noValidate onSubmit={(e) => {
                         e.preventDefault();
                         const formData = new FormData(e.target as HTMLFormElement);
                         const title = formData.get('title') as string;
                         const note = formData.get('note') as string;
-                        handleAddEvent(title, note);
+
+                        if(!title?.trim() && !note?.trim()){
+                            return;
+                        }
+
+                        handleAddEvent(title?.trim() || "", note?.trim() || "");
+                        (e.target as HTMLFormElement).reset();
                     }}>
                         <input name = "title" type="text" placeholder="aggiungi evento..." required />
                         <br/>
-                        <input name = "note" type="text" placeholder="descrizione..." required />
+                        <input name = "note" type="text" placeholder="descrizione..." />
                         <button className="add-botton" type="submit">+</button>
                     </form>
                     
