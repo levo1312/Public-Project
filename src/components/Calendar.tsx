@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import type { DayInfo } from "../types/calendar";
+import type { DayInfo, CalendarEvents } from "../types/calendar";
 import { useCalendarEvents} from "../hooks/useCalendarEvents";
 import './Calendar.css';
 
@@ -10,8 +10,13 @@ interface CalendarProps {
 
 const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     const [currentDate, setCurrentDate] = useState (new Date());         //data odierna 
-    const { events, onAddEvent } = useCalendarEvents();    //gestione eventi
+    const { events, onAddEvent, onUpdateEvent, onDeleteEvent } = useCalendarEvents();    //gestione eventi
     const [showModal, setShowmodal] = useState(false);      //stato modale
+
+    // stato form/modifica
+    const [editingEventId, setEditingEventId] = useState<string | null>(null);
+    const [formTitle, setFormTitle] = useState('');
+    const [formNote, setFormNote] = useState('');
 
     // Chiude il modal premendo Escape
     useEffect(() => {
@@ -66,6 +71,10 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
 //Gestione selezione giorno
     const handleDayClick = (day: DayInfo) => {
         onDateSelect(day.date);
+        // apri modal per aggiungere o vedere eventi
+        setEditingEventId(null);
+        setFormTitle('');
+        setFormNote('');
         setShowmodal(true);
     };
 
@@ -75,6 +84,34 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
         onAddEvent(selectedDate, title, note);
         setShowmodal(false);
     };
+
+    const handleUpdateEvent = () => {
+        if (!editingEventId) return;
+        onUpdateEvent(editingEventId, { title: formTitle, note: formNote, start: selectedDate });
+        setEditingEventId(null);
+        setFormTitle('');
+        setFormNote('');
+        setShowmodal(false);
+    };
+
+    const handleDeleteEvent = (id?: string) => {
+        const targetId = id || editingEventId;
+        if (!targetId) return;
+        onDeleteEvent(targetId);
+        setEditingEventId(null);
+        setFormTitle('');
+        setFormNote('');
+        setShowmodal(false);
+    };
+
+    const openEditFor = (event: CalendarEvents) => {
+        setEditingEventId(event.id);
+        setFormTitle(event.title);
+        setFormNote(event.note);
+        setShowmodal(true);
+    };
+
+
 
 
 //visualizzazione calendario
@@ -115,32 +152,47 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                     {events.filter(event => event.start.toDateString() === selectedDate.toDateString()).length > 0 ? (
                         <ul>
                             {events.filter(event => event.start.toDateString() === selectedDate.toDateString()).map(event =>(
-                                <li key={event.id}>{event.title} - {event.note}</li>
+                                <li key={event.id}>
+                                    <span>{event.title} - {event.note}</span>
+                                    <div className="event-actions">
+                                        <button type="button" className="event-btn" onClick={() => openEditFor(event)}>Modifica</button>
+                                        <button type="button" className="event-btn delete" onClick={() => handleDeleteEvent(event.id)}>Elimina</button>
+                                    </div>
+                                </li>
                             ))}
                         </ul>
                     ) : (
                         <p>Nessun Evento</p>
                     )}
-                    {/*gesttione del form per aggiungere new evento, gestire l'obbligo dei riempimento di tutti i campi*/}
+                    {/*gesttione del form per aggiungere new evento*/}
                     <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowmodal(false)}>X</button>
-                    <h4>Aggiungi Evento:</h4>
+                    <h4>{editingEventId ? 'Modifica Evento:' : 'Aggiungi Evento:'}</h4>
                     <form noValidate onSubmit={(e) => {
                         e.preventDefault();
-                        const formData = new FormData(e.target as HTMLFormElement);
-                        const title = formData.get('title') as string;
-                        const note = formData.get('note') as string;
-
-                        if(!title?.trim() && !note?.trim()){
+                        if (editingEventId) {
+                            handleUpdateEvent();
                             return;
                         }
 
-                        handleAddEvent(title?.trim() || "", note?.trim() || "");
-                        (e.target as HTMLFormElement).reset();
+                        if(!formTitle?.trim() && !formNote?.trim()){
+                            return;
+                        }
+
+                        handleAddEvent(formTitle?.trim() || "", formNote?.trim() || "");
+                        setFormTitle('');
+                        setFormNote('');
                     }}>
-                        <input name = "title" type="text" placeholder="aggiungi evento..." required />
+                        <input name = "title" type="text" placeholder="aggiungi evento..." required value={formTitle} onChange={(e) => setFormTitle(e.target.value)} />
                         <br/>
-                        <input name = "note" type="text" placeholder="descrizione..." />
-                        <button className="add-botton" type="submit">+</button>
+                        <input name = "note" type="text" placeholder="descrizione..." value={formNote} onChange={(e) => setFormNote(e.target.value)} />
+                        {editingEventId ? (
+                            <>
+                                <button className="add-button" type="submit">Salva</button>
+                                <button className="event-btn delete" type="button" onClick={() => handleDeleteEvent()}>Elimina</button>
+                            </>
+                        ) : (
+                            <button className="add-button" type="submit">+</button>
+                        )}
                     </form>
                     
 

@@ -114,6 +114,46 @@
   border-radius: 8px;
 }
 
+.event-actions {
+  display: inline-flex;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.event-btn {
+  background: #7FFFD4;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.event-btn:hover { background: #40E0D0; }
+
+.event-btn.delete {
+  background: #ff7675;
+  color: white;
+}
+
+.event-btn.delete:hover { background: #d63031; }
+
+input{
+  border: none;
+  background-color: transparent;
+  placeolder: black
+}
+
+.add-button{
+    background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 2.2rem;
+}
+
 .close-button {
   position: absolute;
   top: 8px;

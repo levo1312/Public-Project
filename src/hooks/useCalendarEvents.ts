@@ -15,8 +15,15 @@ export const useCalendarEvents = () => {
             allday: false,
         };
         setEvents(prev => [...prev, newEvent]);
-        //qui puoi aggiungere logica per aprire un form di modifica 
+    };
+
+    const onUpdateEvent = (id: string, updated: Partial<CalendarEvents>) => {
+        setEvents(prev => prev.map(ev => ev.id === id ? { ...ev, ...updated } : ev));
+    };
+
+    const onDeleteEvent = (id: string) => {
+        setEvents(prev => prev.filter(ev => ev.id !== id));
     };
     
-    return {events, onAddEvent };
+    return { events, onAddEvent, onUpdateEvent, onDeleteEvent };
 };
