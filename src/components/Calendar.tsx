@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, type Key} from "react";
 import type { DayInfo, CalendarEvents } from "../types/calendar";
 import { useCalendarEvents} from "../hooks/useCalendarEvents";
 import './Calendar.css';
@@ -11,7 +11,8 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     const [currentDate, setCurrentDate] = useState (new Date());         //data odierna 
     const { events, onAddEvent, onUpdateEvent, onDeleteEvent } = useCalendarEvents();    //gestione eventi
-    const [showModal, setShowmodal] = useState(false);      //stato modale
+    const [showModal, setShowModal] = useState(false);      //stato modale
+    const [showMonthPicker, setShowMonthPicker] = useState(false);  // nuovo stato per month picker
 
     // stato form/modifica
     const [editingEventId, setEditingEventId] = useState<string | null>(null);
@@ -22,11 +23,22 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     useEffect(() => {
       if (!showModal) return;
       const onKey = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setShowmodal(false);
+        if (e.key === 'Escape') setShowModal(false);
       };
       window.addEventListener('keydown', onKey);
       return () => window.removeEventListener('keydown', onKey);
     }, [showModal]);
+
+
+    // Chiude il month picker premendo Escape
+    useEffect(() => {
+      if (!showMonthPicker) return;
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setShowMonthPicker(false);
+      };
+      window.addEventListener('keydown', onKey);
+      return () => window.removeEventListener('keydown', onKey);
+    }, [showMonthPicker]);
 
     //funzione per generare i giorni del mese 
     const generDays = () :DayInfo[]=>{
@@ -58,6 +70,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     const days = generDays();
 
 //funzioni per navigazione tra i mesi
+
+
     const previusMonth = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     };
@@ -67,6 +81,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
     };
 
+    // Gestione selezione mese dal picker
+    const handleMonthSelect = (month: number) => {
+        setCurrentDate(new Date(currentDate.getFullYear(), month, 1));
+        setShowMonthPicker(false);
+    };
 
 //Gestione selezione giorno
     const handleDayClick = (day: DayInfo) => {
@@ -75,14 +94,14 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
         setEditingEventId(null);
         setFormTitle('');
         setFormNote('');
-        setShowmodal(true);
+        setShowModal(true);
     };
 
 
 //gestione aggiunta evento
     const handleAddEvent = (title: string, note: string) => {
         onAddEvent(selectedDate, title, note);
-        setShowmodal(false);
+        setShowModal(false);
     };
 
     const handleUpdateEvent = () => {
@@ -91,7 +110,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
         setEditingEventId(null);
         setFormTitle('');
         setFormNote('');
-        setShowmodal(false);
+        setShowModal(false);
     };
 
     const handleDeleteEvent = (id?: string) => {
@@ -101,14 +120,14 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
         setEditingEventId(null);
         setFormTitle('');
         setFormNote('');
-        setShowmodal(false);
+        setShowModal(false);
     };
 
     const openEditFor = (event: CalendarEvents) => {
         setEditingEventId(event.id);
         setFormTitle(event.title);
         setFormNote(event.note);
-        setShowmodal(true);
+        setShowModal(true);
     };
 
 
@@ -119,9 +138,33 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
     <div className ="calendar">
         <div className ="calendar-header">
             <button onClick={previusMonth}>&lt;</button>
-            <h2>{currentDate.toLocaleDateString('it-IT', {month: 'long', year: 'numeric'})}</h2>
+            <h2 onClick={() => setShowMonthPicker(!showMonthPicker)} style={{cursor: 'pointer'}}>
+              {currentDate.toLocaleDateString('it-IT', {month: 'long', year: 'numeric'})}
+            </h2>
             <button onClick={nextMonth}>&gt;</button>
         </div>
+
+        {/* Month Picker Modal */}
+        {showMonthPicker && (
+            <div className="modal-overlay" onClick={() => setShowMonthPicker(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                    <h3>{currentDate.getFullYear()}</h3>
+                    <div className="months-grid">
+                        {['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'].map((month, index) => (
+                            <button
+                                key={index}
+                                className={`month-button ${currentDate.getMonth() === index ? 'active' : ''}`}
+                                onClick={() => handleMonthSelect(index)}
+                            >
+                                {month}
+                            </button>
+                        ))}
+                    </div>
+                    <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowMonthPicker(false)}>X</button>
+                </div>
+            </div>
+        )}
+
 
         <div className ="calendar-grid">
                 {['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'].map(day =>(
@@ -146,7 +189,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
         </div>
 {       /*visualizzazione modal addEvent */}
         {showModal && (
-            <div className="modal-overlay" onClick={()=> setShowmodal(false)}>
+            <div className="modal-overlay" onClick={()=> setShowModal(false)}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                     <h3>Eventi:{selectedDate.toLocaleDateString('it-IT')}</h3>
                     {events.filter(event => event.start.toDateString() === selectedDate.toDateString()).length > 0 ? (
@@ -165,7 +208,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                         <p>Nessun Evento</p>
                     )}
                     {/*gesttione del form per aggiungere new evento*/}
-                    <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowmodal(false)}>X</button>
+                    <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowModal(false)}>X</button>
                     <h4>{editingEventId ? 'Modifica Evento:' : 'Aggiungi Evento:'}</h4>
                     <form noValidate onSubmit={(e) => {
                         e.preventDefault();
