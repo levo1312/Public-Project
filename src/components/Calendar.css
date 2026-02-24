@@ -128,15 +128,15 @@
   border-radius: 4px;
   font-size: 0.9rem;
 }
-
 .event-btn:hover { background: #40E0D0; }
+
 
 .event-btn.delete {
   background: #ff7675;
   color: white;
 }
-
 .event-btn.delete:hover { background: #d63031; }
+
 
 input{
   border: none;
@@ -145,7 +145,7 @@ input{
 }
 
 .add-button{
-    background: transparent;
+  background: transparent;
   border: none;
   color: #fff;
   cursor: pointer;
@@ -153,6 +153,20 @@ input{
   padding: 6px;
   font-size: 2.2rem;
 }
+
+.save-button:hover { background: #40E0D0; }
+.save-button{
+  background: #7FFFD4;
+  border: none;
+  padding: 4px 8px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 0.9rem;
+  margin-right: 8px;
+}
+
 
 .close-button {
   position: absolute;

@@ -6,7 +6,6 @@ import { useCalendarEvents } from './hooks/useCalendarEvents'
 function App() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const { events } = useCalendarEvents()
-
   // Funzione per ottenere eventi per una data
   const getEventsForDate = (date: Date) => {
     return events.filter(event => event.start.toDateString() === date.toDateString())
