@@ -73,7 +73,7 @@
 }
 
 .calendar-day.has-events {
-  background: ;
+  background: none;
 }
 
 .event-indicator {
