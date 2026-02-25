@@ -1,11 +1,16 @@
-.calendar{
+/* ========================================
+   LAYOUT PRINCIPALE
+   ======================================== */
+.calendar {
   max-width: 600px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
 }
 
-/*titoli*/
-.calendar-header{
+/* ========================================
+   HEADER
+   ======================================== */
+.calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,13 +18,12 @@
   margin-bottom: 20px;
 }
 
-.calendar-header h2{
+.calendar-header h2 {
   text-transform: uppercase;
   text-align: center;
 }
 
-/*bottoni titoli*/
-.calendar-header button{
+.calendar-header button {
   background: #7FFFD4;
   border: none;
   padding: 10px;
@@ -27,18 +31,21 @@
   border-radius: 8px;
 }
 
-.calendar-header button:hover{
+.calendar-header button:hover {
   background: #40E0D0;
   color: white;
 }
 
-.calendar-grid{
+/* ========================================
+   GRIGLIA CALENDARIO
+   ======================================== */
+.calendar-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
 
-.calendar-day-header{
+.calendar-day-header {
   text-align: center;
   font-weight: bold;
   border-radius: 8px;
@@ -47,7 +54,7 @@
   color: black;
 }
 
-.calendar-day{
+.calendar-day {
   text-align: left;
   height: 80px;
   padding: 5px;
@@ -76,6 +83,14 @@
   background: none;
 }
 
+.calendar-day:hover {
+  background: #7FFFD4;
+  color: black;
+}
+
+/* ========================================
+   INDICATORE EVENTI
+   ======================================== */
 .event-indicator {
   background: #ffeaa7;
   color: black;
@@ -90,23 +105,21 @@
   margin-left: auto;
 }
 
-.calendar-day:hover {
-  background: #7FFFD4;
-  color: black;
-}
-
-/*gestione stetica modal*/
+/* ========================================
+   MODAL
+   ======================================== */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; 
-  background: rgba(0,0,0,0.5); 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; } 
-  
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .modal-content {
   position: relative;
   background: rgb(60, 58, 58);
@@ -114,37 +127,19 @@
   border-radius: 8px;
 }
 
-.event-actions {
-  display: inline-flex;
-  gap: 8px;
-  margin-left: 12px;
-}
-
-.event-btn {
-  background: #7FFFD4;
-  border: none;
-  padding: 4px 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-.event-btn:hover { background: #40E0D0; }
-
-
-.event-btn.delete {
-  background: #ff7675;
-  color: white;
-}
-.event-btn.delete:hover { background: #d63031; }
-
-
-input{
+/* ========================================
+   INPUT
+   ======================================== */
+input {
   border: none;
   background-color: transparent;
-  placeolder: black
+  placeholder: black;
 }
 
-.add-button{
+/* ========================================
+   PULSANTI
+   ======================================== */
+.add-button {
   background: transparent;
   border: none;
   color: #fff;
@@ -153,20 +148,6 @@ input{
   padding: 6px;
   font-size: 2.2rem;
 }
-
-.save-button:hover { background: #40E0D0; }
-.save-button{
-  background: #7FFFD4;
-  border: none;
-  padding: 4px 8px;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 6px;
-  font-size: 0.9rem;
-  margin-right: 8px;
-}
-
 
 .close-button {
   position: absolute;
@@ -183,12 +164,60 @@ input{
 
 .close-button:hover,
 .close-button:focus {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
 }
 
-/* Month Picker Grid */
+/* ========================================
+   AZIONI EVENTI
+   ======================================== */
+.event-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.event-btn {
+  background: #7FFFD4;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.event-btn:hover {
+  background: #40E0D0;
+}
+
+.event-btn.delete {
+  background: #ff7675;
+  color: white;
+}
+
+.event-btn.delete:hover {
+  background: #d63031;
+}
+
+.save-button {
+  background: #7FFFD4;
+  border: none;
+  padding: 6px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-right: auto;
+}
+
+.save-button:hover {
+  background: #40E0D0;
+}
+
+/* ========================================
+   MONTH PICKER
+   ======================================== */
 .months-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
