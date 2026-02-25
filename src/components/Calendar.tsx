@@ -1,6 +1,7 @@
 import React,{useState, useEffect, type Key} from "react";
 import type { DayInfo, CalendarEvents } from "../types/calendar";
 import { useCalendarEvents} from "../hooks/useCalendarEvents";
+import {Save, Plus, Edit, X, Trash2 } from 'lucide-react';
 import './Calendar.css';
 
 interface CalendarProps {
@@ -160,7 +161,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                             </button>
                         ))}
                     </div>
-                    <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowMonthPicker(false)}>X</button>
+                    <button className="close-button" type="button" aria-label="Chiudi" onClick={() => setShowMonthPicker(false)}> <X size={20}/></button>
                 </div>
             </div>
         )}
@@ -198,8 +199,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                                 <li key={event.id}>
                                     <span>{event.title} - {event.note}</span>
                                     <div className="event-actions">
-                                        <button type="button" className="event-btn" onClick={() => openEditFor(event)}>Modifica</button>
-                                        <button type="button" className="event-btn delete" onClick={() => handleDeleteEvent(event.id)}>Elimina</button>
+                                        <button type="button" className="event-btn" onClick={() => openEditFor(event)}> <Edit size={11}/> </button>
+                                        <button type="button" className="event-btn delete" onClick={() => handleDeleteEvent(event.id)}> <Trash2 size={11}/></button>
                                     </div>
                                 </li>
                             ))}
@@ -231,11 +232,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                         
                         {editingEventId ? (
                             <>
-                                <button className="save-button" type="submit">Salva</button>
+                                <button className="save-button" type="submit"><Save size={11}/></button>
                                 <button className="event-btn delete" type="button" onClick={() => handleDeleteEvent()}>Elimina</button>
                             </>
                         ) : (
-                            <button className="add-button" type="submit">+</button>
+                            <button className="add-button" type="submit"><Plus size={20}/></button>
                         )}
                     </form>
                     
