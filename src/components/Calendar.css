@@ -207,6 +207,24 @@ input {
   background: #40E0D0;
 }
 
+/*pulsanti con icone*/
+.event-btn, .close-button,
+.add-button, .save-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/*pulsanti solo icone*/
+.close-button{
+  padding: 6px;
+}
+
+/*hover effect x icone*/
+.event-btn svg, .close-button svg, .add-button svg{
+  transition: all 0.3s ease;
+}
 
 
 
