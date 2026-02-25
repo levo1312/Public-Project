@@ -228,6 +228,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect }) => {
                         <input name = "title" type="text" placeholder="aggiungi evento..." required value={formTitle} onChange={(e) => setFormTitle(e.target.value)} />
                         <br/>
                         <input name = "note" type="text" placeholder="descrizione..." value={formNote} onChange={(e) => setFormNote(e.target.value)} />
+                        
                         {editingEventId ? (
                             <>
                                 <button className="save-button" type="submit">Salva</button>

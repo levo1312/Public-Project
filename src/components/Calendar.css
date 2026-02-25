@@ -169,14 +169,6 @@ input {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
 }
 
-/* ========================================
-   AZIONI EVENTI
-   ======================================== */
-.event-actions {
-  display: flex;
-  gap: 8px;
-  margin-left: 12px;
-}
 
 .event-btn {
   background: #7FFFD4;
@@ -214,6 +206,20 @@ input {
 .save-button:hover {
   background: #40E0D0;
 }
+
+
+
+
+/* ========================================
+   AZIONI EVENTI
+   ======================================== */
+.event-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+
 
 /* ========================================
    MONTH PICKER
